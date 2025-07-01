@@ -1,5 +1,6 @@
 import React from 'react'
 import './emerging.scss'
+import PDFViewer from './PDFViewer'
 
 // Only detect mobile by user agent, not by screen size
 const isMobile = () =>
@@ -40,6 +41,7 @@ const Emerging = () => {
       </div>
     )
   }
+  // Mobile: use PDF.js viewer for in-app, read-only PDF viewing
   return (
     <div
       className="emerging-container modern-emerging"
@@ -65,36 +67,7 @@ const Emerging = () => {
       >
         Emerging Technology A to Z Tutorial
       </h1>
-      <div
-        style={{
-          width: '100%',
-          height: '60vh',
-          margin: '24px 0',
-          background: 'linear-gradient(135deg, #e3f2fd 0%, #f5f7fa 100%)',
-          borderRadius: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 2px 12px rgba(25, 118, 210, 0.07)',
-          overflow: 'hidden',
-        }}
-      >
-        <iframe
-          src="/emerging.pdf"
-          title="Emerging Technology Tutorial PDF"
-          width="100%"
-          height="100%"
-          style={{
-            border: 'none',
-            borderRadius: '12px',
-            minHeight: '300px',
-            background: '#fff',
-            boxShadow: '0 1px 6px rgba(25, 118, 210, 0.05)',
-            transition: 'box-shadow 0.3s',
-          }}
-          allowFullScreen
-        />
-      </div>
+      <PDFViewer url={'/emerging.pdf'} />
       <div
         style={{
           display: 'flex',
@@ -134,11 +107,11 @@ const Emerging = () => {
           lineHeight: 1.7,
         }}
       >
-        <b>Note:</b> Inline PDF viewing may not work in all browsers or in
-        Telegram.
+        <b>Note:</b> PDF is rendered in-app for reading only. No download
+        required.
         <br />
-        If you still see only a white page, try opening the link in your
-        device's browser.
+        If you see any issues, try refreshing or using Telegram's in-app
+        browser.
       </p>
     </div>
   )
