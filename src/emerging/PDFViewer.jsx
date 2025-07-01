@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { GlobalWorkerOptions, getDocument, version } from 'pdfjs-dist'
+import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf'
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker?worker'
 import 'pdfjs-dist/web/pdf_viewer.css'
 
-// Set the workerSrc property using the version from pdfjs-dist
-GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
+// Set the workerSrc property using the imported worker
+GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 const PDFViewer = ({ url }) => {
   const canvasRef = useRef(null)
