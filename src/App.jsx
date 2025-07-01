@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import Emerging from './emerging/emerging'
 import './App.css'
 
 function App() {
- 
-
   return (
     <>
-     <h1>hello friend</h1> 
+      <Emerging />
     </>
   )
 }
