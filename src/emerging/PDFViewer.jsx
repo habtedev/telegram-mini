@@ -11,17 +11,25 @@ const PDFViewer = ({ url }) => {
   const [pageNum, setPageNum] = useState(1)
   const [numPages, setNumPages] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     let pdf = null
     setLoading(true)
-    getDocument(url).promise.then((loadedPdf) => {
-      pdf = loadedPdf
-      setNumPages(pdf.numPages)
-      renderPage(pageNum)
-    })
+    setError(null)
+    getDocument(url)
+      .promise.then((loadedPdf) => {
+        pdf = loadedPdf
+        setNumPages(pdf.numPages)
+        renderPage(pageNum)
+      })
+      .catch((err) => {
+        setError('Failed to load PDF. ' + (err?.message || ''))
+        setLoading(false)
+      })
 
     function renderPage(num) {
+      if (!pdf) return
       pdf.getPage(num).then((page) => {
         const viewport = page.getViewport({ scale: 1.5 })
         const canvas = canvasRef.current
@@ -43,6 +51,7 @@ const PDFViewer = ({ url }) => {
   return (
     <div style={{ textAlign: 'center' }}>
       {loading && <div>Loading PDF...</div>}
+      {error && <div style={{ color: 'red', margin: '12px 0' }}>{error}</div>}
       <canvas
         ref={canvasRef}
         style={{
@@ -50,27 +59,30 @@ const PDFViewer = ({ url }) => {
           maxWidth: 400,
           borderRadius: 8,
           background: '#fff',
+          display: error ? 'none' : 'block',
         }}
       />
-      <div style={{ margin: '12px 0' }}>
-        <button
-          onClick={goToPrevPage}
-          disabled={pageNum <= 1}
-          style={{ marginRight: 8 }}
-        >
-          Prev
-        </button>
-        <span>
-          Page {pageNum} of {numPages}
-        </span>
-        <button
-          onClick={goToNextPage}
-          disabled={pageNum >= numPages}
-          style={{ marginLeft: 8 }}
-        >
-          Next
-        </button>
-      </div>
+      {!error && (
+        <div style={{ margin: '12px 0' }}>
+          <button
+            onClick={goToPrevPage}
+            disabled={pageNum <= 1}
+            style={{ marginRight: 8 }}
+          >
+            Prev
+          </button>
+          <span>
+            Page {pageNum} of {numPages}
+          </span>
+          <button
+            onClick={goToNextPage}
+            disabled={pageNum >= numPages}
+            style={{ marginLeft: 8 }}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   )
 }
