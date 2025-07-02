@@ -10,11 +10,18 @@ GlobalWorkerOptions.workerSrc = workerSrc
 
 const PDFViewer = ({ url, darkMode }) => {
   const canvasRef = useRef(null)
-  const [pageNum, setPageNum] = useState(1)
+  // Use a unique key for each PDF file
+  const pdfKey = `pdf_last_page_${url}`
+  // Restore last page from localStorage if available
+  const [pageNum, setPageNum] = useState(() => {
+    const saved = localStorage.getItem(pdfKey)
+    return saved ? parseInt(saved, 10) : 1
+  })
   const [numPages, setNumPages] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // Load PDF and set initial page only once on mount/url change
   useEffect(() => {
     let pdf = null
     setLoading(true)
@@ -22,8 +29,14 @@ const PDFViewer = ({ url, darkMode }) => {
     getDocument(url)
       .promise.then((loadedPdf) => {
         pdf = loadedPdf
-        setNumPages(pdf.numPages)
-        renderPage(pageNum)
+        setNumPages(loadedPdf.numPages)
+        // Clamp to valid page if saved page is out of range
+        let saved = localStorage.getItem(pdfKey)
+        let startPage = saved ? parseInt(saved, 10) : 1
+        if (startPage < 1) startPage = 1
+        if (startPage > loadedPdf.numPages) startPage = loadedPdf.numPages
+        setPageNum(startPage)
+        renderPage(startPage)
       })
       .catch((err) => {
         setError('Failed to load PDF. ' + (err?.message || ''))
@@ -43,9 +56,29 @@ const PDFViewer = ({ url, darkMode }) => {
           .promise.then(() => setLoading(false))
       })
     }
+  }, [url, pdfKey])
 
-    renderPage(pageNum)
-  }, [url, pageNum])
+  // Render page when pageNum changes (after initial load)
+  useEffect(() => {
+    if (!numPages || loading || error) return
+    getDocument(url).promise.then((pdf) => {
+      pdf.getPage(pageNum).then((page) => {
+        const viewport = page.getViewport({ scale: 1.5 })
+        const canvas = canvasRef.current
+        const context = canvas.getContext('2d')
+        canvas.height = viewport.height
+        canvas.width = viewport.width
+        page.render({ canvasContext: context, viewport })
+      })
+    })
+  }, [pageNum, numPages, url, loading, error])
+
+  // Save page number to localStorage on change (per PDF)
+  useEffect(() => {
+    if (pageNum && numPages) {
+      localStorage.setItem(pdfKey, pageNum)
+    }
+  }, [pageNum, numPages, pdfKey])
 
   const goToPrevPage = () => setPageNum((prev) => Math.max(prev - 1, 1))
   const goToNextPage = () => setPageNum((prev) => Math.min(prev + 1, numPages))

@@ -1,12 +1,94 @@
-# React + Vite
+# Telegram Mini App: Educational PDF Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, mobile-first Telegram Mini App for viewing educational notes (PDF) inside Telegram's in-app browser. Built with React, Vite, and PDF.js, featuring a beautiful UI, dark mode, and robust mobile experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📱 **Mobile-first:** Only accessible on mobile devices inside Telegram
+- 📄 **PDF.js integration:** In-app, read-only PDF viewing (no download)
+- 🌙 **Dark mode:** User toggle for light/dark themes
+- ⚡ **Animated loader:** Modern progress bar while PDF loads
+- 🖼️ **Modern UI:** Gradients, rounded corners, touch-friendly controls
+- 🚫 **Desktop restriction:** Shows a message if opened on desktop/tablet
+- 🛡️ **No download:** PDF is rendered, not downloadable
 
-## Expanding the ESLint configuration
+## Demo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![Mobile Screenshot](./public/demo-mobile.png)
+
+## Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/telegram-mini-pdf-app.git
+cd telegram-mini-pdf-app
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Add your PDF
+
+Place your PDF file (e.g. `emerging.pdf`) in the `public/` folder.
+
+### 4. Run locally
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) on your mobile device or with mobile emulation.
+
+### 5. Deploy
+
+Deploy to [Vercel](https://vercel.com/) for instant hosting. The app is optimized for static hosting.
+
+## Telegram Mini App Integration
+
+1. Deploy your app and get the public URL (e.g. `https://your-app.vercel.app`).
+2. In [BotFather](https://t.me/BotFather), set your bot's mini app URL to your deployed site.
+3. Users can open the mini app via your Telegram bot.
+
+## Project Structure
+
+```
+telegram-mini/
+├── public/
+│   └── emerging.pdf           # Your educational PDF
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── emerging/
+│       ├── emerging.jsx       # Main component (device detection, dark mode)
+│       ├── PDFViewer.jsx      # PDF.js viewer with loader, dark mode
+│       ├── emerging.scss      # Modern, responsive styles
+│       └── PDFViewer.scss     # PDF viewer styles
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+## Customization
+
+- **Change the PDF:** Replace `public/emerging.pdf` with your own file.
+- **Branding:** Edit colors, gradients, and text in `emerging.scss` and `PDFViewer.scss`.
+- **Content:** Update headings and info badges in `emerging.jsx`.
+
+## Tech Stack
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [PDF.js](https://mozilla.github.io/pdf.js/)
+- [Sass](https://sass-lang.com/)
+
+## License
+
+MIT
+
+---
+
+**Built for the future of education on Telegram.**
