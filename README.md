@@ -11,6 +11,7 @@ A modern, mobile-first Telegram Mini App for viewing educational notes (PDF) ins
 - 🖼️ **Modern UI:** Gradients, rounded corners, touch-friendly controls
 - 🚫 **Desktop restriction:** Shows a message if opened on desktop/tablet
 - 🛡️ **No download:** PDF is rendered, not downloadable
+- 🕑 **Resume where you left off:** Remembers your last-read page for each PDF, so you always continue reading from the same spot—even after closing or days later
 
 ## Demo
 
