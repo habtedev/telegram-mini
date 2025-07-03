@@ -8,9 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-     "start": "node backend/bot.js"
+    "start": "node backend/bot.js"
   },
   "dependencies": {
+    "dotenv": "^17.0.1",
     "pdfjs-dist": "^4.10.38",
     "prop-types": "^15.8.1",
     "react": "^19.1.0",
