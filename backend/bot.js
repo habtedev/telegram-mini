@@ -74,4 +74,29 @@ bot.onText(/\/start/, (msg) => {
   })
 })
 
+// Send a message with 5 subject buttons in your group when /start is used
+const groupId = -123456789 // Replace with your group chat ID
+
+bot.onText(/\/start/, (msg) => {
+  // Only respond in your group
+  if (msg.chat.id !== groupId) return
+
+  const buttons = subjects.map((s) => [
+    {
+      text: s.text,
+      web_app: {
+        url: `${process.env.MINI_APP_URL}?subject=${
+          s.subject
+        }&pdf=${encodeURIComponent(s.pdf)}`,
+      },
+    },
+  ])
+
+  bot.sendMessage(groupId, 'Select a subject to view its PDF:', {
+    reply_markup: {
+      inline_keyboard: buttons,
+    },
+  })
+})
+
 // You can add more handlers here for other commands or features
