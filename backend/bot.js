@@ -85,11 +85,9 @@ bot.onText(/\/start/, (msg) => {
   const buttons = subjects.map((s) => [
     {
       text: s.text,
-      web_app: {
-        url: `${process.env.MINI_APP_URL}?subject=${
-          s.subject
-        }&pdf=${encodeURIComponent(s.pdf)}`,
-      },
+      url: `${process.env.MINI_APP_URL}?subject=${
+        s.subject
+      }&pdf=${encodeURIComponent(s.pdf)}`,
     },
   ])
 
