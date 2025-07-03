@@ -53,6 +53,7 @@ const subjects = [
 
 // Handle /start command and send subject-specific buttons
 bot.onText(/\/start/, (msg) => {
+  console.log('Group or chat ID:', msg.chat.id) // Log the chat ID to Railway logs
   const chatId = msg.chat.id
   subjects.forEach((s) => {
     bot.sendMessage(chatId, s.desc, {
