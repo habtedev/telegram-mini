@@ -51,51 +51,45 @@ const subjects = [
   },
 ]
 
-// Handle /start command and send subject-specific buttons
+// Handle /start command and send subject-specific buttons (private chat only)
 bot.onText(/\/start/, (msg) => {
-  console.log('Group or chat ID:', msg.chat.id) // Log the chat ID to Railway logs
   const chatId = msg.chat.id
-  subjects.forEach((s) => {
-    bot.sendMessage(chatId, s.desc, {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Open',
-              web_app: {
-                url: `${miniAppUrl}?subject=${
-                  s.subject
-                }&pdf=${encodeURIComponent(s.pdf)}`,
+  if (msg.chat.type === 'private') {
+    // Private chat: send web_app button for each subject
+    subjects.forEach((s) => {
+      bot.sendMessage(chatId, s.desc, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Open',
+                web_app: {
+                  url: `${miniAppUrl}?subject=${
+                    s.subject
+                  }&pdf=${encodeURIComponent(s.pdf)}`,
+                },
               },
-            },
+            ],
           ],
-        ],
+        },
+      })
+    })
+  } else if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
+    // Group chat: send one message with url buttons
+    const buttons = subjects.map((s) => [
+      {
+        text: s.text,
+        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+          s.pdf,
+        )}`,
+      },
+    ])
+    bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
+      reply_markup: {
+        inline_keyboard: buttons,
       },
     })
-  })
-})
-
-// Send a message with 5 subject buttons in your group when /start is used
-const groupId = -123456789 // Replace with your group chat ID
-
-bot.onText(/\/start/, (msg) => {
-  // Only respond in your group
-  if (msg.chat.id !== groupId) return
-
-  const buttons = subjects.map((s) => [
-    {
-      text: s.text,
-      url: `${process.env.MINI_APP_URL}?subject=${
-        s.subject
-      }&pdf=${encodeURIComponent(s.pdf)}`,
-    },
-  ])
-
-  bot.sendMessage(groupId, 'Select a subject to view its PDF:', {
-    reply_markup: {
-      inline_keyboard: buttons,
-    },
-  })
+  }
 })
 
 // You can add more handlers here for other commands or features
