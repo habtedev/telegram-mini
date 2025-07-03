@@ -88,6 +88,9 @@ const PDFViewer = ({ url, darkMode }) => {
       className={`pdf-viewer-modern${darkMode ? ' dark' : ''}`}
       style={{ textAlign: 'center' }}
     >
+      <div style={{ fontSize: '0.9em', color: '#888', marginBottom: 8 }}>
+        <b>Debug PDF URL:</b> {url}
+      </div>
       {loading && (
         <div className="pdf-loading">
           <div className="pdf-progress-bar">

@@ -1,10 +1,10 @@
-import Emerging from './emerging/emerging'
+import SubjectReader from './emerging/SubjectReader'
 import './App.css'
 
 function App() {
   return (
     <>
-      <Emerging />
+      <SubjectReader />
     </>
   )
 }

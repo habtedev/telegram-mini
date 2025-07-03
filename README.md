@@ -11,6 +11,7 @@ A modern, mobile-first Telegram Mini App for viewing educational notes (PDF) ins
 - 🖼️ **Modern UI:** Gradients, rounded corners, touch-friendly controls
 - 🚫 **Desktop restriction:** Shows a message if opened on desktop/tablet
 - 🛡️ **No download:** PDF is rendered, not downloadable
+- 🕑 **Resume where you left off:** Remembers your last-read page for each PDF, so you always continue reading from the same spot—even after closing or days later
 
 ## Demo
 
@@ -52,6 +53,13 @@ Deploy to [Vercel](https://vercel.com/) for instant hosting. The app is optimize
 1. Deploy your app and get the public URL (e.g. `https://your-app.vercel.app`).
 2. In [BotFather](https://t.me/BotFather), set your bot's mini app URL to your deployed site.
 3. Users can open the mini app via your Telegram bot.
+
+## Important: How to Open as a Telegram Mini App
+
+> **To open this app as a true Telegram Mini App popup, users must launch it via your Telegram bot (using the "Open Mini App" button or a deep link from the bot).**
+>
+> - If you post the link in a channel or group, it will open in the browser, not as a Mini App popup.
+> - To guide users: tell them to click your bot's username, tap "Start," and then tap "Open Mini App" for the best experience.
 
 ## Project Structure
 
