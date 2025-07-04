@@ -29,7 +29,7 @@ const subjects = [
     text: 'A to Z Tutorial',
     subject: 'atoz',
     pdf: 'antro.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ A to Z Tutorial!\n\nAntropology\n\nAll Chapters In Amharic & English',
+    desc: '🎉  Welcome!  🎉\n\n✨ Antropology!\n\nAntropology\n\nAll Chapters In Amharic & English',
   },
   {
     text: 'Civics',
@@ -91,13 +91,13 @@ bot.onText(/\/start/, async (msg) => {
       )
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Group chat: send one message per subject, each with its own url button and description
+    // Group chat: send one message per subject, each with its own url button and improved HTML formatting
     for (const s of subjects) {
-      const groupMsg = `${s.desc}`
+      const groupMsg = `\n🎉 <b>Welcome!</b> 🎉\n\n✨ <b>A to Z Tutorial!</b>\n\n<b>${s.text}</b>\n\nAll Chapters In Amharic & English`
       const button = [
         [
           {
-            text: 'Open',
+            text: 'Open Note',
             url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
               s.pdf,
             )}`,
@@ -106,6 +106,7 @@ bot.onText(/\/start/, async (msg) => {
       ]
       try {
         await bot.sendMessage(chatId, groupMsg, {
+          parse_mode: 'HTML',
           reply_markup: {
             inline_keyboard: button,
           },
@@ -147,5 +148,10 @@ bot.onText(/\/start/, async (msg) => {
     }
   }
 })
+
+// Helper function to capitalize first letter
+function capitalizeFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 // You can add more handlers here for other commands or features
