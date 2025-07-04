@@ -17,6 +17,14 @@ if (!miniAppUrl) {
 
 const bot = new TelegramBot(token, { polling: true })
 
+// Add global error handlers at the top for better debugging
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason)
+})
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err)
+})
+
 // Define all subjects and their PDF files/messages in one place
 const subjects = [
   {
