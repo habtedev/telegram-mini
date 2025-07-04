@@ -57,57 +57,68 @@ bot.onText(/\/start/, async (msg) => {
   const chatType = msg.chat.type
   console.log(`Received /start from chatId: ${chatId}, chatType: ${chatType}`)
   if (chatType === 'private') {
-    // Private chat: send web_app button for each subject
-    for (const s of subjects) {
-      try {
-        await bot.sendMessage(chatId, s.desc, {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: 'Open',
-                  web_app: {
-                    url: `${miniAppUrl}?subject=${
-                      s.subject
-                    }&pdf=${encodeURIComponent(s.pdf)}`,
-                  },
-                },
-              ],
-            ],
+    // Private chat: send one message with all subjects as buttons (2 per row)
+    const welcomeMsg =
+      '🎉 <b>Welcome to the Educational PDF Bot!</b> 🎉\n\nSelect a subject below to open its PDF. All chapters are available in Amharic & English.'
+    // 2 buttons per row
+    const buttons = []
+    for (let i = 0; i < subjects.length; i += 2) {
+      const row = []
+      for (let j = i; j < i + 2 && j < subjects.length; j++) {
+        row.push({
+          text: subjects[j].text,
+          web_app: {
+            url: `${miniAppUrl}?subject=${
+              subjects[j].subject
+            }&pdf=${encodeURIComponent(subjects[j].pdf)}`,
           },
         })
-        console.log(
-          `Sent web_app button for subject ${s.subject} to private chat ${chatId}`,
-        )
-      } catch (err) {
-        console.error(
-          `Error sending web_app button to private chat ${chatId} for subject ${s.subject}:`,
-          err.message,
-        )
       }
+      buttons.push(row)
     }
-  } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Group chat: send one message with url buttons (one per row)
-    const buttons = subjects.map((s) => [
-      {
-        text: s.text,
-        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-          s.pdf,
-        )}`,
-      },
-    ])
     try {
-      await bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
+      await bot.sendMessage(chatId, welcomeMsg, {
+        parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: buttons,
         },
       })
-      console.log(`Sent url buttons to group chat ${chatId}`)
+      console.log(`Sent modern web_app buttons to private chat ${chatId}`)
     } catch (err) {
       console.error(
-        `Error sending url buttons to group chat ${chatId}:`,
+        `Error sending modern web_app buttons to private chat ${chatId}:`,
         err.message,
       )
+    }
+  } else if (chatType === 'group' || chatType === 'supergroup') {
+    // Group chat: send one message per subject, each with its own url button and description
+    for (const s of subjects) {
+      const groupMsg = `${s.desc}`
+      const button = [
+        [
+          {
+            text: 'Open',
+            url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+              s.pdf,
+            )}`,
+          },
+        ],
+      ]
+      try {
+        await bot.sendMessage(chatId, groupMsg, {
+          reply_markup: {
+            inline_keyboard: button,
+          },
+        })
+        console.log(
+          `Sent url button for subject ${s.subject} to group chat ${chatId}`,
+        )
+      } catch (err) {
+        console.error(
+          `Error sending url button to group chat ${chatId} for subject ${s.subject}:`,
+          err.message,
+        )
+      }
     }
   } else {
     // Fallback: use url buttons for unknown chat types (one per row)
