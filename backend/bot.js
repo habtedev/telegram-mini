@@ -105,10 +105,10 @@ bot.onText(/\/start/, async (msg) => {
   } else if (chatType === 'group' || chatType === 'supergroup') {
     // Send a single loading message first
     const loadingMsg = `
-<b>⏳ <span style="color:#1976d2;">Loading your notes...</span> 🌀</b><br>
-<span style="font-size:1.5em;">✨📚🚀</span><br><br>
-<span style="color:#ffb300;font-size:1.1em;">Please wait while we prepare your notes!</span><br>
-<span style="font-size:2em;">🔄</span>
+<b>⏳ Loading your notes... 🌀</b><br>
+✨📚🚀<br><br>
+<b>Please wait while we prepare your notes!</b><br>
+🔄
 `
     await bot.sendMessage(chatId, loadingMsg, {
       parse_mode: 'HTML',
