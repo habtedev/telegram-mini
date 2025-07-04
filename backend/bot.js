@@ -103,9 +103,20 @@ bot.onText(/\/start/, async (msg) => {
       )
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Group chat: send one message per subject, each with its own url button and improved formatting
+    // Send a single loading message first
+    const loadingMsg = `
+<b>⏳ <span style="color:#1976d2;">Loading your notes...</span> 🌀</b><br>
+<span style="font-size:1.5em;">✨📚🚀</span><br><br>
+<span style="color:#ffb300;font-size:1.1em;">Please wait while we prepare your notes!</span><br>
+<span style="font-size:2em;">🔄</span>
+`
+    await bot.sendMessage(chatId, loadingMsg, {
+      parse_mode: 'HTML',
+      disable_web_page_preview: true,
+    })
+
+    // Now send all subject messages
     for (const s of subjects) {
-      // Convert HTML to MarkdownV2 for group messages (no HTML tags, only emoji and plain text)
       let groupMsg = s.desc
         .replace(/<b>(.*?)<\/b>/g, '*$1*') // bold to MarkdownV2
         .replace(/\n/g, '\n\n') // double newline for MarkdownV2
@@ -143,17 +154,6 @@ bot.onText(/\/start/, async (msg) => {
           err.message,
         )
       }
-      // Highly interactive, modern loading message with animated emoji and color
-      const loadingMsg = `
-<b>⏳ <span style="color:#1976d2;">Loading your note...</span> 🌀</b><br>
-<span style="font-size:1.5em;">✨📚🚀</span><br><br>
-<span style="color:#ffb300;font-size:1.1em;">Please wait while we prepare your note!</span><br>
-<span style="font-size:2em;">🔄</span>
-`
-      await bot.sendMessage(chatId, loadingMsg, {
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      })
     }
   } else {
     // Fallback: use url buttons for unknown chat types (one per row)
