@@ -23,31 +23,31 @@ const subjects = [
     text: 'Emerging Technology',
     subject: 'emerging',
     pdf: 'emerging.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ A to Z Tutorial!\n\nEmerging Technology\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Emerging Technology</b>\n\nAll Chapters In Amharic & English',
   },
   {
-    text: 'A to Z Tutorial',
-    subject: 'atoz',
+    text: 'Antropology',
+    subject: 'antropology',
     pdf: 'antro.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ Antropology!\n\nAntropology\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Antropology</b>\n\nAll Chapters In Amharic & English',
   },
   {
     text: 'Civics',
     subject: 'civics',
     pdf: 'civic.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ Civics Special!\n\nCivic\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Civics</b>\n\nAll Chapters In Amharic & English',
   },
   {
-    text: 'Global',
+    text: 'Global Trade',
     subject: 'global',
     pdf: 'global.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ Global Studies!\n\nGlobal Trade\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Global Trade</b>\n\nAll Chapters In Amharic & English',
   },
   {
     text: 'Logic and Critical Thinking',
     subject: 'logic',
     pdf: 'Logic and Critical Thinking.pdf',
-    desc: '🎉  Welcome!  🎉\n\n✨ Logic and Critical Thinking!\n\nLogic\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Logic and Critical Thinking</b>\n\nAll Chapters In Amharic & English',
   },
 ]
 
@@ -55,7 +55,10 @@ const subjects = [
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id
   const chatType = msg.chat.type
-  console.log(`Received /start from chatId: ${chatId}, chatType: ${chatType}`)
+  const threadId = msg.message_thread_id
+  console.log(
+    `Received /start from chatId: ${chatId}, chatType: ${chatType}, threadId: ${threadId}`,
+  )
   if (chatType === 'private') {
     // Private chat: send one message with all subjects as buttons (2 per row)
     const welcomeMsg =
@@ -93,7 +96,7 @@ bot.onText(/\/start/, async (msg) => {
   } else if (chatType === 'group' || chatType === 'supergroup') {
     // Group chat: send one message per subject, each with its own url button and improved HTML formatting
     for (const s of subjects) {
-      const groupMsg = `\n🎉 <b>Welcome!</b> 🎉\n\n✨ <b>A to Z Tutorial!</b>\n\n<b>${s.text}</b>\n\nAll Chapters In Amharic & English`
+      const groupMsg = s.desc
       const button = [
         [
           {
@@ -110,8 +113,8 @@ bot.onText(/\/start/, async (msg) => {
           inline_keyboard: button,
         },
       }
-      if (msg.message_thread_id) {
-        sendOptions.message_thread_id = msg.message_thread_id
+      if (threadId) {
+        sendOptions.message_thread_id = threadId
       }
       try {
         await bot.sendMessage(chatId, groupMsg, sendOptions)
