@@ -123,6 +123,37 @@ const ModernLoading = ({ show }) => {
   )
 }
 
+const SubjectPicker = ({ onSelect, current }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '10px',
+      justifyContent: 'center',
+      margin: '18px 0',
+    }}
+  >
+    {Object.keys(subjectMessages).map((key) => (
+      <button
+        key={key}
+        className={`subject-btn${current === key ? ' selected' : ''}`}
+        style={{
+          padding: '8px 16px',
+          borderRadius: '20px',
+          border: current === key ? '2px solid #1976d2' : '1px solid #bbb',
+          background: current === key ? '#e3f2fd' : '#fff',
+          color: '#1976d2',
+          fontWeight: 600,
+          cursor: 'pointer',
+        }}
+        onClick={() => onSelect(key)}
+      >
+        {subjectMessages[key].subtitle.replace('✨ ', '')}
+      </button>
+    ))}
+  </div>
+)
+
 const SubjectReader = () => {
   const [darkMode, setDarkMode] = useState(false)
   const toggleDarkMode = () => setDarkMode((d) => !d)
@@ -163,6 +194,16 @@ const SubjectReader = () => {
       navigator.userAgent,
     )
 
+  // Add a handler to change subject and update URL
+  const handleSubjectSelect = (key) => {
+    setSubject(key)
+    setPdf(`${key}.pdf`)
+    const params = new URLSearchParams(window.location.search)
+    params.set('subject', key)
+    params.set('pdf', `${key}.pdf`)
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+  }
+
   if (!isMobile()) {
     return (
       <div
@@ -187,6 +228,7 @@ const SubjectReader = () => {
           {darkMode ? '🌙 Dark' : '☀️ Light'}
         </button>
         <div style={{ width: '100%' }}>
+          <SubjectPicker onSelect={handleSubjectSelect} current={subject} />
           <h2 style={{ color: '#d32f2f', fontWeight: 700 }}>
             This content is only available on mobile devices inside the Telegram
             Mini App.
@@ -223,6 +265,7 @@ const SubjectReader = () => {
           >
             {darkMode ? '🌙 Dark' : '☀️ Light'}
           </button>
+          <SubjectPicker onSelect={handleSubjectSelect} current={subject} />
           <h1
             style={{
               color: darkMode ? '#90caf9' : '#1976d2',
