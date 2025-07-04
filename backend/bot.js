@@ -95,9 +95,10 @@ bot.onText(/\/start/, async (msg) => {
       )
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Group chat: send one message per subject, each with its own url button and improved HTML formatting
+    // Group chat: send one message per subject, each with its own url button and improved formatting
     for (const s of subjects) {
-      const groupMsg = s.desc
+      // Replace <br> with \n for Telegram group HTML compatibility
+      const groupMsg = s.desc.replace(/<br>/g, '\n')
       const button = [
         [
           {
