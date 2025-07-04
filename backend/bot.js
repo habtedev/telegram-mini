@@ -105,7 +105,7 @@ bot.onText(/\/start/, async (msg) => {
     let groupMsg = ''
     const buttons = []
     for (const s of subjects) {
-      groupMsg += `🎉 <b>Welcome!</b> 🎉<br>✨ <b>A to Z Tutorial!</b><br><b>${s.text}</b><br>All Chapters In Amharic & English<br><br>`
+      groupMsg += `🎉 <b>Welcome!</b> 🎉\n✨ <b>A to Z Tutorial!</b>\n<b>${s.text}</b>\nAll Chapters In Amharic & English\n\n`
       buttons.push([
         {
           text: `Open ${s.text} Note`,
