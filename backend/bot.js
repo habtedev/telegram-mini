@@ -113,9 +113,11 @@ bot.onText(/\/start/, async (msg) => {
     await bot.sendMessage(chatId, loadingMsg, {
       parse_mode: 'HTML',
       disable_web_page_preview: true,
+      ...(threadId && { message_thread_id: threadId }),
+      reply_to_message_id: msg.message_id,
     })
 
-    // Now send all subject messages
+    // Now send all subject messages as replies to the /start message
     for (const s of subjects) {
       let groupMsg = s.desc
         .replace(/<b>(.*?)<\/b>/g, '*$1*') // bold to MarkdownV2
@@ -137,16 +139,11 @@ bot.onText(/\/start/, async (msg) => {
           inline_keyboard: button,
         },
         disable_web_page_preview: true,
-      }
-      if (threadId) {
-        sendOptions.message_thread_id = threadId
+        ...(threadId && { message_thread_id: threadId }),
+        reply_to_message_id: msg.message_id,
       }
       try {
         await bot.sendMessage(chatId, groupMsg, sendOptions)
-        console.log(
-          `Sent url button for subject ${s.subject} to group chat ${chatId}`,
-        )
-        // Add a short delay to avoid Telegram flood limits
         await new Promise((res) => setTimeout(res, 600))
       } catch (err) {
         console.error(
