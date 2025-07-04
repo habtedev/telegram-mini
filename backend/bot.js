@@ -52,43 +52,84 @@ const subjects = [
 ]
 
 // Handle /start command and send subject-specific buttons (private chat only)
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id
-  if (msg.chat.type === 'private') {
+  const chatType = msg.chat.type
+  console.log(`Received /start from chatId: ${chatId}, chatType: ${chatType}`)
+  if (chatType === 'private') {
     // Private chat: send web_app button for each subject
-    subjects.forEach((s) => {
-      bot.sendMessage(chatId, s.desc, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: 'Open',
-                web_app: {
-                  url: `${miniAppUrl}?subject=${
-                    s.subject
-                  }&pdf=${encodeURIComponent(s.pdf)}`,
+    for (const s of subjects) {
+      try {
+        await bot.sendMessage(chatId, s.desc, {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: 'Open',
+                  web_app: {
+                    url: `${miniAppUrl}?subject=${
+                      s.subject
+                    }&pdf=${encodeURIComponent(s.pdf)}`,
+                  },
                 },
-              },
+              ],
             ],
-          ],
+          },
+        })
+        console.log(
+          `Sent web_app button for subject ${s.subject} to private chat ${chatId}`,
+        )
+      } catch (err) {
+        console.error(
+          `Error sending web_app button to private chat ${chatId} for subject ${s.subject}:`,
+          err.message,
+        )
+      }
+    }
+  } else if (chatType === 'group' || chatType === 'supergroup') {
+    // Group chat: send one message with url buttons
+    const buttons = subjects.map((s) => ({
+      text: s.text,
+      url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+        s.pdf,
+      )}`,
+    }))
+    try {
+      await bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
+        reply_markup: {
+          inline_keyboard: [buttons],
         },
       })
-    })
-  } else if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
-    // Group chat: send one message with url buttons
-    const buttons = subjects.map((s) => [
-      {
-        text: s.text,
-        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-          s.pdf,
-        )}`,
-      },
-    ])
-    bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
-      reply_markup: {
-        inline_keyboard: buttons,
-      },
-    })
+      console.log(`Sent url buttons to group chat ${chatId}`)
+    } catch (err) {
+      console.error(
+        `Error sending url buttons to group chat ${chatId}:`,
+        err.message,
+      )
+    }
+  } else {
+    // Fallback: use url buttons for unknown chat types
+    const buttons = subjects.map((s) => ({
+      text: s.text,
+      url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+        s.pdf,
+      )}`,
+    }))
+    try {
+      await bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
+        reply_markup: {
+          inline_keyboard: [buttons],
+        },
+      })
+      console.log(
+        `Sent fallback url buttons to chat ${chatId} (type: ${chatType})`,
+      )
+    } catch (err) {
+      console.error(
+        `Error sending fallback url buttons to chat ${chatId} (type: ${chatType}):`,
+        err.message,
+      )
+    }
   }
 })
 
