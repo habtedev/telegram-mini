@@ -87,17 +87,19 @@ bot.onText(/\/start/, async (msg) => {
       }
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Group chat: send one message with url buttons
-    const buttons = subjects.map((s) => ({
-      text: s.text,
-      url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-        s.pdf,
-      )}`,
-    }))
+    // Group chat: send one message with url buttons (one per row)
+    const buttons = subjects.map((s) => [
+      {
+        text: s.text,
+        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+          s.pdf,
+        )}`,
+      },
+    ])
     try {
       await bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
         reply_markup: {
-          inline_keyboard: [buttons],
+          inline_keyboard: buttons,
         },
       })
       console.log(`Sent url buttons to group chat ${chatId}`)
@@ -108,17 +110,19 @@ bot.onText(/\/start/, async (msg) => {
       )
     }
   } else {
-    // Fallback: use url buttons for unknown chat types
-    const buttons = subjects.map((s) => ({
-      text: s.text,
-      url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-        s.pdf,
-      )}`,
-    }))
+    // Fallback: use url buttons for unknown chat types (one per row)
+    const buttons = subjects.map((s) => [
+      {
+        text: s.text,
+        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
+          s.pdf,
+        )}`,
+      },
+    ])
     try {
       await bot.sendMessage(chatId, 'Select a subject to view its PDF:', {
         reply_markup: {
-          inline_keyboard: [buttons],
+          inline_keyboard: buttons,
         },
       })
       console.log(
