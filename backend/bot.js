@@ -104,13 +104,17 @@ bot.onText(/\/start/, async (msg) => {
           },
         ],
       ]
+      const sendOptions = {
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: button,
+        },
+      }
+      if (msg.message_thread_id) {
+        sendOptions.message_thread_id = msg.message_thread_id
+      }
       try {
-        await bot.sendMessage(chatId, groupMsg, {
-          parse_mode: 'HTML',
-          reply_markup: {
-            inline_keyboard: button,
-          },
-        })
+        await bot.sendMessage(chatId, groupMsg, sendOptions)
         console.log(
           `Sent url button for subject ${s.subject} to group chat ${chatId}`,
         )
