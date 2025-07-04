@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './emerging.scss'
-import PDFViewer from './PDFViewer'
+import PDFViewerScrollable from './PDFViewerScrollable'
 
 const subjectMessages = {
   emerging: {
@@ -158,7 +158,7 @@ const SubjectReader = () => {
       >
         {msg.description}
       </p>
-      <PDFViewer url={`/${pdf}`} darkMode={darkMode} />
+      <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
       <div
         style={{
           display: 'flex',

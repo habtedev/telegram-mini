@@ -23,31 +23,31 @@ const subjects = [
     text: 'Emerging Technology',
     subject: 'emerging',
     pdf: 'emerging.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Emerging Technology</b>\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉<br>✨ <b>Emerging Technology</b><br>All Chapters In Amharic & English',
   },
   {
     text: 'Antropology',
     subject: 'antropology',
     pdf: 'antro.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Antropology</b>\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉<br>✨ <b>Antropology</b><br>All Chapters In Amharic & English',
   },
   {
     text: 'Civics',
     subject: 'civics',
     pdf: 'civic.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Civics</b>\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉<br>✨ <b>Civics</b><br>All Chapters In Amharic & English',
   },
   {
     text: 'Global Trade',
     subject: 'global',
     pdf: 'global.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Global Trade</b>\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉<br>✨ <b>Global Trade</b><br>All Chapters In Amharic & English',
   },
   {
     text: 'Logic and Critical Thinking',
     subject: 'logic',
     pdf: 'Logic and Critical Thinking.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n\n✨ <b>Logic and Critical Thinking</b>\n\nAll Chapters In Amharic & English',
+    desc: '🎉 <b>Welcome!</b> 🎉<br>✨ <b>Logic and Critical Thinking</b><br>All Chapters In Amharic & English',
   },
 ]
 
@@ -62,7 +62,7 @@ bot.onText(/\/start/, async (msg) => {
   if (chatType === 'private') {
     // Private chat: send one message with all subjects as buttons (2 per row)
     const welcomeMsg =
-      '🎉 <b>Welcome to the Educational PDF Bot!</b> 🎉\n\nSelect a subject below to open its PDF. All chapters are available in Amharic & English.'
+      '🎉 <b>Welcome to the Educational PDF Bot!</b> 🎉<br>Select a subject below to open its PDF. All chapters are available in Amharic & English.'
     // 2 buttons per row
     const buttons = []
     for (let i = 0; i < subjects.length; i += 2) {
@@ -85,6 +85,7 @@ bot.onText(/\/start/, async (msg) => {
         reply_markup: {
           inline_keyboard: buttons,
         },
+        disable_web_page_preview: true,
       })
       console.log(`Sent modern web_app buttons to private chat ${chatId}`)
     } catch (err) {
@@ -112,6 +113,7 @@ bot.onText(/\/start/, async (msg) => {
         reply_markup: {
           inline_keyboard: button,
         },
+        disable_web_page_preview: true,
       }
       if (threadId) {
         sendOptions.message_thread_id = threadId
@@ -143,6 +145,7 @@ bot.onText(/\/start/, async (msg) => {
         reply_markup: {
           inline_keyboard: buttons,
         },
+        disable_web_page_preview: true,
       })
       console.log(
         `Sent fallback url buttons to chat ${chatId} (type: ${chatType})`,
