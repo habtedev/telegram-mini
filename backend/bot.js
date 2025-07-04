@@ -30,31 +30,26 @@ const subjects = [
   {
     text: 'Emerging Technology',
     subject: 'emerging',
-    pdf: 'emerging.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Emerging Technology</b>\nAll Chapters In Amharic & English',
   },
   {
-    text: 'Antropology',
-    subject: 'antropology',
-    pdf: 'antro.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Antropology</b>\nAll Chapters In Amharic & English',
+    text: 'English',
+    subject: 'english',
+    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>English</b>\nAll Chapters In Amharic & English',
+  },
+  {
+    text: 'Math',
+    subject: 'math',
+    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Math</b>\nAll Chapters In Amharic & English',
   },
   {
     text: 'Civics',
     subject: 'civics',
-    pdf: 'civic.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Civics</b>\nAll Chapters In Amharic & English',
-  },
-  {
-    text: 'Global Trade',
-    subject: 'global',
-    pdf: 'global.pdf',
-    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Global Trade</b>\nAll Chapters In Amharic & English',
   },
   {
     text: 'Logic and Critical Thinking',
     subject: 'logic',
-    pdf: 'Logic and Critical Thinking.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Logic and Critical Thinking</b>\nAll Chapters In Amharic & English',
   },
 ]
@@ -79,9 +74,7 @@ bot.onText(/\/start/, async (msg) => {
         row.push({
           text: subjects[j].text,
           web_app: {
-            url: `${miniAppUrl}?subject=${
-              subjects[j].subject
-            }&pdf=${encodeURIComponent(subjects[j].pdf)}`,
+            url: `${miniAppUrl}/${subjects[j].subject}`,
           },
         })
       }
@@ -104,12 +97,7 @@ bot.onText(/\/start/, async (msg) => {
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
     // Send a single loading message first
-    const loadingMsg = `
-<b>⏳ Loading your notes... 🌀</b><br>
-✨📚🚀<br><br>
-<b>Please wait while we prepare your notes!</b><br>
-🔄
-`
+    const loadingMsg = `\n<b>⏳ Loading your notes... 🌀</b><br>\n✨📚🚀<br><br>\n<b>Please wait while we prepare your notes!</b><br>\n🔄\n`
     await bot.sendMessage(chatId, loadingMsg, {
       parse_mode: 'HTML',
       disable_web_page_preview: true,
@@ -127,9 +115,7 @@ bot.onText(/\/start/, async (msg) => {
         [
           {
             text: 'Open Note',
-            url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-              s.pdf,
-            )}`,
+            url: `${miniAppUrl}/${s.subject}`,
           },
         ],
       ]
@@ -157,9 +143,7 @@ bot.onText(/\/start/, async (msg) => {
     const buttons = subjects.map((s) => [
       {
         text: s.text,
-        url: `${miniAppUrl}?subject=${s.subject}&pdf=${encodeURIComponent(
-          s.pdf,
-        )}`,
+        url: `${miniAppUrl}/${s.subject}`,
       },
     ])
     try {
