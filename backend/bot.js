@@ -135,6 +135,8 @@ bot.onText(/\/start/, async (msg) => {
         console.log(
           `Sent url button for subject ${s.subject} to group chat ${chatId}`,
         )
+        // Add a short delay to avoid Telegram flood limits
+        await new Promise((res) => setTimeout(res, 600))
       } catch (err) {
         console.error(
           `Error sending url button to group chat ${chatId} for subject ${s.subject}:`,
