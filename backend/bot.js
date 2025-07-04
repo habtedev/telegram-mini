@@ -97,39 +97,11 @@ bot.onText(/\/start/, async (msg) => {
   } else if (chatType === 'group' || chatType === 'supergroup') {
     // Group chat: send one message per subject, each with its own url button and improved formatting
     for (const s of subjects) {
-      // Convert HTML to MarkdownV2 for group messages
+      // Convert HTML to MarkdownV2 for group messages (no HTML tags, only emoji and plain text)
       let groupMsg = s.desc
-        .replace(/<b>(.*?)<\/b>/g, '*$1*') // bold
-        .replace(/([_\-!#\.\(\)\[\]{}=+~`>\|])/g, '\\$1') // escape special chars
-        .replace(/([\*])/g, '\\$1') // escape asterisks
+        .replace(/<b>(.*?)<\/b>/g, '*$1*') // bold to MarkdownV2
         .replace(/\n/g, '\n\n') // double newline for MarkdownV2
-        .replace(/([\[\]])/g, '\\$1') // escape brackets
-        .replace(/([!])/g, '\\$1') // escape exclamation
-        .replace(/([.])/g, '\\$1') // escape dot
-        .replace(/([#])/g, '\\$1') // escape hash
-        .replace(/([\(\)])/g, '\\$1') // escape parenthesis
-        .replace(/([\-])/g, '\\$1') // escape dash
-        .replace(/([`])/g, '\\$1') // escape backtick
-        .replace(/([>])/g, '\\$1') // escape greater than
-        .replace(/([=])/g, '\\$1') // escape equal
-        .replace(/([|])/g, '\\$1') // escape pipe
-        .replace(/([~])/g, '\\$1') // escape tilde
-        .replace(/([{}])/g, '\\$1') // escape curly braces
-        .replace(/([\\])/g, '\\$1') // escape backslash
-        .replace(/([\$])/g, '\\$1') // escape dollar
-        .replace(/([\^])/g, '\\$1') // escape caret
-        .replace(/([:])/g, '\\$1') // escape colon
-        .replace(/([;])/g, '\\$1') // escape semicolon
-        .replace(/([,])/g, '\\$1') // escape comma
-        .replace(/([?])/g, '\\$1') // escape question
-        .replace(/([/])/g, '\\$1') // escape slash
-        .replace(/([&])/g, '\\$1') // escape ampersand
-        .replace(/([%])/g, '\\$1') // escape percent
-        .replace(/([@])/g, '\\$1') // escape at
-        .replace(/(['])/g, '\\$1') // escape single quote
-        .replace(/(["])/g, '\\$1') // escape double quote
-        .replace(/([<])/g, '\\$1') // escape less than
-        .replace(/([0-9])/g, '$1') // numbers do not need escaping
+        .replace(/[\*_\[\]()~`>#+\-=|{}.!]/g, '\\$&') // escape all MarkdownV2 special chars
       const button = [
         [
           {
