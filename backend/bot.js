@@ -30,26 +30,31 @@ const subjects = [
   {
     text: 'Emerging Technology',
     subject: 'emerging',
+    pdf: 'emerging.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Emerging Technology</b>\nAll Chapters In Amharic & English',
   },
   {
-    text: 'English',
-    subject: 'english',
-    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>English</b>\nAll Chapters In Amharic & English',
-  },
-  {
-    text: 'Math',
-    subject: 'math',
-    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Math</b>\nAll Chapters In Amharic & English',
+    text: 'Antropology',
+    subject: 'antropology',
+    pdf: 'antro.pdf',
+    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Antropology</b>\nAll Chapters In Amharic & English',
   },
   {
     text: 'Civics',
     subject: 'civics',
+    pdf: 'civic.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Civics</b>\nAll Chapters In Amharic & English',
+  },
+  {
+    text: 'Global',
+    subject: 'global',
+    pdf: 'global.pdf',
+    desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Global</b>\nAll Chapters In Amharic & English',
   },
   {
     text: 'Logic and Critical Thinking',
     subject: 'logic',
+    pdf: 'Logic and Critical Thinking.pdf',
     desc: '🎉 <b>Welcome!</b> 🎉\n✨ <b>Logic and Critical Thinking</b>\nAll Chapters In Amharic & English',
   },
 ]
@@ -96,47 +101,34 @@ bot.onText(/\/start/, async (msg) => {
       )
     }
   } else if (chatType === 'group' || chatType === 'supergroup') {
-    // Send a single loading message first
-    const loadingMsg = `\n<b>⏳ Loading your notes... 🌀</b><br>\n✨📚🚀<br><br>\n<b>Please wait while we prepare your notes!</b><br>\n🔄\n`
-    await bot.sendMessage(chatId, loadingMsg, {
-      parse_mode: 'HTML',
-      disable_web_page_preview: true,
-      ...(threadId && { message_thread_id: threadId }),
-      reply_to_message_id: msg.message_id,
-    })
-
-    // Now send all subject messages as replies to the /start message
+    // Group chat: send a single message with all subjects and buttons
+    let groupMsg = ''
+    const buttons = []
     for (const s of subjects) {
-      let groupMsg = s.desc
-        .replace(/<b>(.*?)<\/b>/g, '*$1*') // bold to MarkdownV2
-        .replace(/\n/g, '\n\n') // double newline for MarkdownV2
-        .replace(/[\*_\[\]()~`>#+\-=|{}.!]/g, '\\$&') // escape all MarkdownV2 special chars
-      const button = [
-        [
-          {
-            text: 'Open Note',
-            url: `${miniAppUrl}/${s.subject}`,
-          },
-        ],
-      ]
-      const sendOptions = {
-        parse_mode: 'MarkdownV2',
+      groupMsg += `🎉 <b>Welcome!</b> 🎉<br>✨ <b>A to Z Tutorial!</b><br><b>${s.text}</b><br>All Chapters In Amharic & English<br><br>`
+      buttons.push([
+        {
+          text: `Open ${s.text} Note`,
+          url: `${miniAppUrl}/${s.subject}`,
+        },
+      ])
+    }
+    try {
+      await bot.sendMessage(chatId, groupMsg, {
+        parse_mode: 'HTML',
         reply_markup: {
-          inline_keyboard: button,
+          inline_keyboard: buttons,
         },
         disable_web_page_preview: true,
         ...(threadId && { message_thread_id: threadId }),
         reply_to_message_id: msg.message_id,
-      }
-      try {
-        await bot.sendMessage(chatId, groupMsg, sendOptions)
-        await new Promise((res) => setTimeout(res, 600))
-      } catch (err) {
-        console.error(
-          `Error sending url button to group chat ${chatId} for subject ${s.subject}:`,
-          err.message,
-        )
-      }
+      })
+      console.log(`Sent all subjects in one message to group chat ${chatId}`)
+    } catch (err) {
+      console.error(
+        `Error sending all subjects in one message to group chat ${chatId}:`,
+        err.message,
+      )
     }
   } else {
     // Fallback: use url buttons for unknown chat types (one per row)
