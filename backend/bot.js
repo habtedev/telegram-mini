@@ -79,7 +79,9 @@ bot.onText(/\/start/, async (msg) => {
         row.push({
           text: subjects[j].text,
           web_app: {
-            url: `${miniAppUrl}/${subjects[j].subject}`,
+            url: `${miniAppUrl}/?subject=${
+              subjects[j].subject
+            }&pdf=${encodeURIComponent(subjects[j].pdf)}`,
           },
         })
       }
@@ -109,7 +111,9 @@ bot.onText(/\/start/, async (msg) => {
       buttons.push([
         {
           text: `Open ${s.text} Note`,
-          url: `${miniAppUrl}/${s.subject}`,
+          url: `${miniAppUrl}/?subject=${s.subject}&pdf=${encodeURIComponent(
+            s.pdf,
+          )}`,
         },
       ])
     }
@@ -135,7 +139,9 @@ bot.onText(/\/start/, async (msg) => {
     const buttons = subjects.map((s) => [
       {
         text: s.text,
-        url: `${miniAppUrl}/${s.subject}`,
+        url: `${miniAppUrl}/?subject=${s.subject}&pdf=${encodeURIComponent(
+          s.pdf,
+        )}`,
       },
     ])
     try {

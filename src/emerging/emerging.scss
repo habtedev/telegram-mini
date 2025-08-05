@@ -112,11 +112,27 @@
 // Responsive mobile tweaks for perfect mini app fit
 @media (max-width: 600px) {
   .emerging-container.modern-emerging {
-    padding: 18px 4vw 18px 4vw;
-    margin: 12px 0 0 0;
-    max-width: 100vw;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(25, 118, 210, 0.1);
+    padding: 0;
+    margin: 0;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .pdf-viewer-scrollable {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+  .pdf-page-img {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    display: block;
+    font-weight: 900 !important;
   }
   .emerging-container.modern-emerging h1,
   .emerging-container.modern-emerging h2 {
