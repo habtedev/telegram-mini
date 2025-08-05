@@ -38,7 +38,7 @@ const PDFViewerScrollable = ({ url, darkMode }) => {
         const loadedPages = []
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i)
-          const viewport = page.getViewport({ scale: 1.2 })
+          const viewport = page.getViewport({ scale: 2.0 })
           const canvas = document.createElement('canvas')
           const context = canvas.getContext('2d')
           canvas.height = viewport.height

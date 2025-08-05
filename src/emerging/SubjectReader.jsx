@@ -15,7 +15,7 @@ const subjectMessages = {
     description: 'Antro\n\nAll Chapters In Amharic & English',
     button: 'Open Note',
   },
-  civics: {
+  civic: {
     title: '🎉  Welcome!  🎉',
     subtitle: '✨ Civics Special!',
     description: 'Civic\n\nAll Chapters In Amharic & English',
@@ -159,8 +159,16 @@ const SubjectReader = () => {
   const toggleDarkMode = () => setDarkMode((d) => !d)
 
   // Use state for subject and pdf, and update on URL change
-  const [subject, setSubject] = useState(getQueryParam('subject') || 'emerging')
-  const [pdf, setPdf] = useState(getQueryParam('pdf') || 'emerging.pdf')
+  const [subject, setSubject] = useState(
+    getQueryParam('subject') === 'civics'
+      ? 'civic'
+      : getQueryParam('subject') || 'emerging',
+  )
+  const [pdf, setPdf] = useState(
+    getQueryParam('pdf') === 'civics.pdf'
+      ? 'civic.pdf'
+      : getQueryParam('pdf') || 'emerging.pdf',
+  )
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -171,8 +179,16 @@ const SubjectReader = () => {
 
   useEffect(() => {
     const onUrlChange = () => {
-      setSubject(getQueryParam('subject') || 'emerging')
-      setPdf(getQueryParam('pdf') || 'emerging.pdf')
+      const subj =
+        getQueryParam('subject') === 'civics'
+          ? 'civic'
+          : getQueryParam('subject') || 'emerging'
+      const pdfFile =
+        getQueryParam('pdf') === 'civics.pdf'
+          ? 'civic.pdf'
+          : getQueryParam('pdf') || 'emerging.pdf'
+      setSubject(subj)
+      setPdf(pdfFile)
     }
     window.addEventListener('popstate', onUrlChange)
     window.addEventListener('pushstate', onUrlChange)
@@ -196,11 +212,13 @@ const SubjectReader = () => {
 
   // Add a handler to change subject and update URL
   const handleSubjectSelect = (key) => {
-    setSubject(key)
-    setPdf(`${key}.pdf`)
+    let realKey = key === 'civics' ? 'civic' : key
+    let realPdf = key === 'civics' ? 'civic.pdf' : `${key}.pdf`
+    setSubject(realKey)
+    setPdf(realPdf)
     const params = new URLSearchParams(window.location.search)
-    params.set('subject', key)
-    params.set('pdf', `${key}.pdf`)
+    params.set('subject', realKey)
+    params.set('pdf', realPdf)
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
   }
 
@@ -269,10 +287,10 @@ const SubjectReader = () => {
           <h1
             style={{
               color: darkMode ? '#90caf9' : '#1976d2',
-              fontSize: '2.2rem',
-              marginBottom: '18px',
-              letterSpacing: '1px',
-              fontWeight: 700,
+              fontSize: '2.7rem',
+              marginBottom: '22px',
+              letterSpacing: '1.2px',
+              fontWeight: 900,
             }}
           >
             {msg.title}
@@ -280,9 +298,9 @@ const SubjectReader = () => {
           <h2
             style={{
               color: darkMode ? '#90caf9' : '#1976d2',
-              fontSize: '1.5rem',
-              marginBottom: '12px',
-              fontWeight: 600,
+              fontSize: '2rem',
+              marginBottom: '16px',
+              fontWeight: 800,
             }}
           >
             {msg.subtitle}
@@ -290,9 +308,10 @@ const SubjectReader = () => {
           <p
             style={{
               color: darkMode ? '#bbb' : '#555',
-              fontSize: '1rem',
-              marginTop: '18px',
-              lineHeight: 1.7,
+              fontSize: '1.25rem',
+              marginTop: '22px',
+              lineHeight: 1.8,
+              fontWeight: 700,
             }}
           >
             {msg.description}
