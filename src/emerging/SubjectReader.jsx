@@ -1,287 +1,227 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './emerging.scss'
 import PDFViewerScrollable from './PDFViewerScrollable'
 
 const subjectMessages = {
   emerging: {
-    title: '🎉  Welcome!  🎉',
+    emoji: '📘',
+    subject: 'Emerging Technology',
+    title: '🎉 Welcome! 🎉',
     subtitle: '✨ A to Z Tutorial!',
-    description: 'Emerging Technology\n\nAll Chapters In Amharic & English',
+    description: 'Emerging Technology\nAll Chapters In Amharic & English',
     button: 'Open Note',
+    pdf: 'emerging.pdf',
   },
   atoz: {
-    title: '🎉  Welcome!  🎉',
-    subtitle: '✨ Antropology Tutorial!',
-    description: 'Antro\n\nAll Chapters In Amharic & English',
+    emoji: '📙',
+    subject: 'Antropology',
+    title: '🎉 Welcome! 🎉',
+    subtitle: '✨ A to Z Tutorial!',
+    description: 'Antropology\nAll Chapters In Amharic & English',
     button: 'Open Note',
+    pdf: 'antro.pdf',
   },
   civic: {
-    title: '🎉  Welcome!  🎉',
-    subtitle: '✨ Civics Tutorial!',
-    description: 'Civic\n\nAll Chapters In Amharic & English',
-  // Unified layout for all subjects
-  // Subject name for line 3
-  const subjectName =
-    subject === 'emerging' ? 'Emerging Technology'
-    : subject === 'atoz' ? 'Antropology'
-    : subject === 'civic' ? 'Civics'
-    : subject === 'global' ? 'Global'
-    : subject === 'logic' ? 'Logic and Critical Thinking'
-    : 'Emerging Technology';
-  // Subtitle for line 2
-  const subtitle = subject === 'logic' ? '✨ Logic and Critical Thinking' : '✨ A to Z Tutorial!';
+    emoji: '📗',
+    subject: 'Civics',
+    title: '🎉 Welcome! 🎉',
+    subtitle: '✨ A to Z Tutorial!',
+    description: 'Civics\nAll Chapters In Amharic & English',
+    button: 'Open Note',
+    pdf: 'civic.pdf',
+  },
+  global: {
+    emoji: '🌍',
+    subject: 'Global',
+    title: '🎉 Welcome! 🎉',
+    subtitle: '✨ A to Z Tutorial!',
+    description: 'Global\nAll Chapters In Amharic & English',
+    button: 'Open Note',
+    pdf: 'global.pdf',
+  },
+  logic: {
+    emoji: '📕',
+    subject: 'Logic and Critical Thinking',
+    title: '🎉 Welcome! 🎉',
+    subtitle: '✨ A to Z Tutorial!',
+    description:
+      'Logic and Critical Thinking\nAll Chapters In Amharic & English',
+    button: 'Open Note',
+    pdf: 'Logic and Critical Thinking.pdf',
+  },
+}
+
+const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
+  const { emoji, subject, title, subtitle, description, button } =
+    subjectMessages[subjectKey]
+  const [line1, line2] = description.split('\n')
   return (
-    <div style={{ position: 'relative' }}>
-      <ModernLoading show={loading} />
-      {!loading && (
-        <div
-          className={`emerging-container modern-emerging${darkMode ? ' dark' : ''}`}
-          style={{ minHeight: '60vh', maxWidth: '700px', margin: '32px auto' }}
-        >
-          <button
-            className="dark-toggle"
-            onClick={toggleDarkMode}
-            aria-label="Toggle dark mode"
-          >
-            {darkMode ? '🌙 Dark' : '☀️ Light'}
-          </button>
-          <div style={{ marginBottom: 18 }}>
-            <div
-              style={{
-                color: darkMode ? '#90caf9' : '#1976d2',
-                fontSize: '2.5rem',
-                fontWeight: 900,
-                letterSpacing: '1.2px',
-              }}
-            >
-              🎉 Welcome! 🎉
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#90caf9' : '#1976d2',
-                fontSize: '2rem',
-                fontWeight: 800,
-                margin: '12px 0 8px 0',
-              }}
-            >
-              {subtitle}
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#bbb' : '#555',
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                margin: '8px 0',
-              }}
-            >
-              {subjectName}
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#bbb' : '#555',
-                fontSize: '1.15rem',
-                fontWeight: 700,
-                margin: '8px 0 0 0',
-              }}
-            >
-              All Chapters In Amharic & English
-            </div>
-          </div>
-          <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              marginTop: '18px',
-            }}
-          >
-            <span className="info-badge">
-              <svg
-                width="20"
-                height="20"
-                fill={darkMode ? '#90caf9' : '#1976d2'}
-                style={{ verticalAlign: 'middle', marginRight: '4px' }}
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-2.83.48-5.48-1.51-5.96-4.34-.09-.52.36-.93.88-.93.44 0 .81.32.88.75.36 2.13 2.5 3.45 4.5 2.83 1.5-.47 2.5-1.96 2.5-3.58 0-1.62-1-3.11-2.5-3.58-2-.62-4.14.7-4.5 2.83-.07.43-.44.75-.88.75-.52 0-.97-.41-.88-.93.48-2.83 3.13-4.82 5.96-4.34 2.83.48 4.82 3.13 4.34 5.96-.48 2.83-3.13 4.82-5.96 4.34z" />
-              </svg>
-              For viewing only inside the mini app
-            </span>
-          </div>
-          <p
-            style={{
-              color: darkMode ? '#bbb' : '#555',
-              fontSize: '1rem',
-              marginTop: '18px',
-              lineHeight: 1.7,
-            }}
-          >
-            <b>Note:</b> PDF is rendered in-app for reading only. No download required.
-            <br />
-            If you see any issues, try refreshing or using Telegram's in-app browser.
-          </p>
-          <button className="open-note-btn" style={{ marginTop: 18 }}>Open Note</button>
-        </div>
-      )}
+    <div
+      className="subject-card"
+      style={{
+        background: darkMode ? '#1e1e1e' : '#fff',
+        color: darkMode ? '#fff' : '#333',
+        border: `2px solid ${darkMode ? '#444' : '#ddd'}`,
+        borderRadius: '16px',
+        padding: '20px',
+        maxWidth: '400px',
+        margin: '16px auto',
+        textAlign: 'center',
+        boxShadow: darkMode
+          ? '0 4px 12px rgba(255,255,255,0.1)'
+          : '0 4px 12px rgba(0,0,0,0.1)',
+      }}
+    >
+      <div style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 6 }}>
+        {emoji} {subject}
+      </div>
+      <div style={{ fontSize: '1.8rem', fontWeight: 700 }}>{title}</div>
+      <div style={{ fontSize: '1.2rem', margin: '8px 0', color: '#1976d2' }}>
+        {subtitle}
+      </div>
+      <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>{line1}</div>
+      <div style={{ fontSize: '1.1rem', marginBottom: 16 }}>{line2}</div>
+      <button
+        onClick={() => onSelect(subjectKey)}
+        style={{
+          padding: '10px 24px',
+          borderRadius: '30px',
+          background: '#1976d2',
+          color: '#fff',
+          border: 'none',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          fontSize: '1.1rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          margin: '0 auto',
+        }}
+      >
+        <span style={{ fontSize: '1.3rem' }}>➡️</span> {button}
+      </button>
     </div>
   )
-  }, [])
+}
 
-  const msg = subjectMessages[subject] || subjectMessages['emerging']
+function SubjectReader() {
+  const [darkMode, setDarkMode] = useState(false)
+  const [selectedSubject, setSelectedSubject] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  // Only detect mobile by user agent, not by screen size
   const isMobile = () =>
     /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
       navigator.userAgent,
     )
 
-  // Add a handler to change subject and update URL
   const handleSubjectSelect = (key) => {
-    let realKey = key === 'civics' ? 'civic' : key
-    let realPdf = key === 'civics' ? 'civic.pdf' : `${key}.pdf`
-    setSubject(realKey)
-    setPdf(realPdf)
-    const params = new URLSearchParams(window.location.search)
-    params.set('subject', realKey)
-    params.set('pdf', realPdf)
-    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+    setLoading(true)
+    setTimeout(() => {
+      setSelectedSubject(key)
+      setLoading(false)
+    }, 500)
   }
 
-  // Only detect mobile by user agent, not by screen size
+  const toggleDarkMode = () => setDarkMode((d) => !d)
+
   if (!isMobile()) {
     return (
       <div
-        className={`emerging-container modern-emerging${darkMode ? ' dark' : ''}`}
-        style={{
-          minHeight: '40vh',
-          maxWidth: '700px',
-          margin: '32px auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
+        className={`emerging-container modern-emerging${
+          darkMode ? ' dark' : ''
+        }`}
       >
-        <button
-          className="dark-toggle"
-          onClick={toggleDarkMode}
-          aria-label="Toggle dark mode"
-        >
-          {darkMode ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <div style={{ width: '100%' }}>
-          <h2 style={{ color: '#d32f2f', fontWeight: 700 }}>
-            This content is only available on mobile devices inside the Telegram Mini App.
-          </h2>
-          <p style={{ color: '#555', fontSize: '1rem', marginTop: '18px' }}>
-            Please open this link on your mobile device using Telegram.
-            <br />
-            <b>Note:</b> If you see this message on mobile, try refreshing or using Telegram's in-app browser.
-          </p>
-        </div>
+        <h2>
+          Open this mini app in Telegram on your mobile device for the best
+          experience.
+        </h2>
       </div>
     )
   }
-  // Mobile: use PDF.js viewer for in-app, read-only PDF viewing
+
   return (
-    <div style={{ position: 'relative' }}>
-      <ModernLoading show={loading} />
-      {!loading && (
-        <div
-          className={`emerging-container modern-emerging${darkMode ? ' dark' : ''}`}
-          style={{ minHeight: '60vh', maxWidth: '700px', margin: '32px auto' }}
-        >
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        background: darkMode ? '#181818' : '#f5f5f5',
+      }}
+    >
+      <button
+        className="dark-toggle"
+        onClick={toggleDarkMode}
+        aria-label="Toggle dark mode"
+        style={{ position: 'fixed', top: 10, right: 10, zIndex: 10 }}
+      >
+        {darkMode ? '🌙 Dark' : '☀️ Light'}
+      </button>
+      {!selectedSubject && (
+        <div>
+          {Object.keys(subjectMessages).map((key) => (
+            <SubjectCard
+              key={key}
+              subjectKey={key}
+              onSelect={handleSubjectSelect}
+              darkMode={darkMode}
+            />
+          ))}
+        </div>
+      )}
+      {selectedSubject && (
+        <div style={{ maxWidth: '700px', margin: '32px auto' }}>
+          <PDFViewerScrollable
+            url={`/${subjectMessages[selectedSubject].pdf}`}
+            darkMode={darkMode}
+          />
           <button
-            className="dark-toggle"
-            onClick={toggleDarkMode}
-            aria-label="Toggle dark mode"
+            onClick={() => setSelectedSubject(null)}
+            style={{
+              marginTop: 24,
+              padding: '10px 20px',
+              borderRadius: '30px',
+              background: '#1976d2',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
           >
-            {darkMode ? '🌙 Dark' : '☀️ Light'}
+            Back to Subjects
           </button>
-          <div style={{ marginBottom: 18 }}>
-            <div
-              style={{
-                color: darkMode ? '#90caf9' : '#1976d2',
-                fontSize: '2.5rem',
-                fontWeight: 900,
-                letterSpacing: '1.2px',
-              }}
-            >
-              🎉 Welcome! 🎉
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#90caf9' : '#1976d2',
-                fontSize: '2rem',
-                fontWeight: 800,
-                margin: '12px 0 8px 0',
-              }}
-            >
-              {subtitle}
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#bbb' : '#555',
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                margin: '8px 0',
-              }}
-            >
-              {subjectName}
-            </div>
-            <div
-              style={{
-                color: darkMode ? '#bbb' : '#555',
-                fontSize: '1.15rem',
-                fontWeight: 700,
-                margin: '8px 0 0 0',
-              }}
-            >
-              All Chapters In Amharic & English
-            </div>
-          </div>
-          <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
+        </div>
+      )}
+      {loading && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.2)',
+            zIndex: 100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              marginTop: '18px',
+              background: '#fff',
+              padding: 32,
+              borderRadius: 16,
+              fontSize: 24,
             }}
           >
-            <span className="info-badge">
-              <svg
-                width="20"
-                height="20"
-                fill={darkMode ? '#90caf9' : '#1976d2'}
-                style={{ verticalAlign: 'middle', marginRight: '4px' }}
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-2.83.48-5.48-1.51-5.96-4.34-.09-.52.36-.93.88-.93.44 0 .81.32.88.75.36 2.13 2.5 3.45 4.5 2.83 1.5-.47 2.5-1.96 2.5-3.58 0-1.62-1-3.11-2.5-3.58-2-.62-4.14.7-4.5 2.83-.07.43-.44.75-.88.75-.52 0-.97-.41-.88-.93.48-2.83 3.13-4.82 5.96-4.34 2.83.48 4.82 3.13 4.34 5.96-.48 2.83-3.13 4.82-5.96 4.34z" />
-              </svg>
-              For viewing only inside the mini app
-            </span>
+            Loading...
           </div>
-          <p
-            style={{
-              color: darkMode ? '#bbb' : '#555',
-              fontSize: '1rem',
-              marginTop: '18px',
-              lineHeight: 1.7,
-            }}
-          >
-            <b>Note:</b> PDF is rendered in-app for reading only. No download required.
-            <br />
-            If you see any issues, try refreshing or using Telegram's in-app browser.
-          </p>
-          <button className="open-note-btn" style={{ marginTop: 18 }}>Open Note</button>
         </div>
       )}
     </div>
   )
+}
 
-
-export default SubjectReader;
+export default SubjectReader
