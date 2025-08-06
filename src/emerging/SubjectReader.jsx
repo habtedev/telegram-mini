@@ -52,7 +52,7 @@ const subjectMessages = {
 }
 
 const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
-  const { emoji, subject, title, subtitle, description, button } =
+  const { emoji, subject, title, subtitle, description } =
     subjectMessages[subjectKey]
   const [line1, line2] = description.split('\n')
   return (
@@ -65,7 +65,7 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
         borderRadius: '16px',
         padding: '20px',
         maxWidth: '400px',
-        margin: '16px auto',
+        margin: '32px auto',
         textAlign: 'center',
         boxShadow: darkMode
           ? '0 4px 12px rgba(255,255,255,0.1)'
@@ -80,7 +80,7 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
         {subtitle}
       </div>
       <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>{line1}</div>
-      <div style={{ fontSize: '1.1rem', marginBottom: 16 }}>{line2}</div>
+      <div style={{ fontSize: '1.1rem', marginBottom: 12 }}>{line2}</div>
       <button
         onClick={() => onSelect(subjectKey)}
         style={{
@@ -98,7 +98,7 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
           margin: '0 auto',
         }}
       >
-        <span style={{ fontSize: '1.3rem' }}>➡️</span> {button}
+        <span style={{ fontSize: '1.3rem' }}>➡️</span> [ Open Note ]
       </button>
     </div>
   )
