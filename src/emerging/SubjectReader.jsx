@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './emerging.scss'
 import PDFViewerScrollable from './PDFViewerScrollable'
 
@@ -51,7 +51,7 @@ const subjectMessages = {
   },
 }
 
-const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
+const SubjectCard = ({ subjectKey, onSelect, darkMode, isLast }) => {
   const { emoji, subject, title, subtitle, description } =
     subjectMessages[subjectKey]
   const [line1, line2] = description.split('\n')
@@ -65,7 +65,7 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
         borderRadius: '16px',
         padding: '20px',
         maxWidth: '400px',
-        margin: '32px auto',
+        margin: `32px auto${isLast ? '' : ' 48px'}`,
         textAlign: 'center',
         boxShadow: darkMode
           ? '0 4px 12px rgba(255,255,255,0.1)'
@@ -75,7 +75,9 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
       <div style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 6 }}>
         {emoji} {subject}
       </div>
-      <div style={{ fontSize: '1.8rem', fontWeight: 700 }}>{title}</div>
+      <div style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: 6 }}>
+        {title}
+      </div>
       <div style={{ fontSize: '1.2rem', margin: '8px 0', color: '#1976d2' }}>
         {subtitle}
       </div>
@@ -105,10 +107,12 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode }) => {
 }
 
 function SubjectReader() {
-  const [darkMode, setDarkMode] = useState(false)
-  const [selectedSubject, setSelectedSubject] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [darkMode, setDarkMode] = React.useState(false)
+  const [selectedSubject, setSelectedSubject] = React.useState(null)
+  const [loading, setLoading] = React.useState(false)
+  const [currentIdx, setCurrentIdx] = React.useState(0)
 
+  const subjectKeys = Object.keys(subjectMessages)
   const isMobile = () =>
     /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
       navigator.userAgent,
@@ -122,7 +126,12 @@ function SubjectReader() {
     }, 500)
   }
 
-  const toggleDarkMode = () => setDarkMode((d) => !d)
+  const handleNext = () => {
+    setCurrentIdx((idx) => (idx < subjectKeys.length - 1 ? idx + 1 : idx))
+  }
+  const handlePrev = () => {
+    setCurrentIdx((idx) => (idx > 0 ? idx - 1 : idx))
+  }
 
   if (!isMobile()) {
     return (
@@ -139,6 +148,35 @@ function SubjectReader() {
     )
   }
 
+  if (selectedSubject) {
+    return (
+      <div style={{ maxWidth: '700px', margin: '32px auto' }}>
+        <PDFViewerScrollable
+          url={`/${subjectMessages[selectedSubject].pdf}`}
+          darkMode={darkMode}
+        />
+        <button
+          onClick={() => setSelectedSubject(null)}
+          style={{
+            marginTop: 24,
+            padding: '10px 20px',
+            borderRadius: '30px',
+            background: '#1976d2',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          Back to Subjects
+        </button>
+      </div>
+    )
+  }
+
   return (
     <div
       style={{
@@ -149,50 +187,21 @@ function SubjectReader() {
     >
       <button
         className="dark-toggle"
-        onClick={toggleDarkMode}
+        onClick={() => setDarkMode((d) => !d)}
         aria-label="Toggle dark mode"
         style={{ position: 'fixed', top: 10, right: 10, zIndex: 10 }}
       >
         {darkMode ? '🌙 Dark' : '☀️ Light'}
       </button>
-      {!selectedSubject && (
-        <div>
-          {Object.keys(subjectMessages).map((key) => (
-            <SubjectCard
-              key={key}
-              subjectKey={key}
-              onSelect={handleSubjectSelect}
-              darkMode={darkMode}
-            />
-          ))}
-        </div>
-      )}
-      {selectedSubject && (
-        <div style={{ maxWidth: '700px', margin: '32px auto' }}>
-          <PDFViewerScrollable
-            url={`/${subjectMessages[selectedSubject].pdf}`}
-            darkMode={darkMode}
-          />
-          <button
-            onClick={() => setSelectedSubject(null)}
-            style={{
-              marginTop: 24,
-              padding: '10px 20px',
-              borderRadius: '30px',
-              background: '#1976d2',
-              color: '#fff',
-              border: 'none',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'block',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
-            Back to Subjects
-          </button>
-        </div>
-      )}
+      {subjectKeys.map((key, idx, arr) => (
+        <SubjectCard
+          key={key}
+          subjectKey={key}
+          onSelect={handleSubjectSelect}
+          darkMode={darkMode}
+          isLast={idx === arr.length - 1}
+        />
+      ))}
       {loading && (
         <div
           style={{
