@@ -11,25 +11,25 @@ const subjectMessages = {
   },
   atoz: {
     title: '🎉  Welcome!  🎉',
-    subtitle: '✨ A to Z Tutorial!',
+    subtitle: '✨ Antropology Tutorial!',
     description: 'Antro\n\nAll Chapters In Amharic & English',
     button: 'Open Note',
   },
   civic: {
     title: '🎉  Welcome!  🎉',
-    subtitle: '✨ Civics Special!',
+    subtitle: '✨ Civics Tutorial!',
     description: 'Civic\n\nAll Chapters In Amharic & English',
     button: 'Open Civics Note',
   },
   global: {
     title: '🎉  Welcome!  🎉',
-    subtitle: '✨ Global Studies!',
+    subtitle: '✨ Global Tutorial!',
     description: 'Global\n\nAll Chapters In Amharic & English',
     button: 'Open Global Note',
   },
   logic: {
     title: '🎉  Welcome!  🎉',
-    subtitle: '✨ Logic and Critical Thinking!',
+    subtitle: '✨ Logic and Critical Thinking Tutorial',
     description: 'Logic\n\nAll Chapters In Amharic & English',
     button: 'Open Logic Note',
   },
@@ -270,11 +270,7 @@ const SubjectReader = () => {
           className={`emerging-container modern-emerging${
             darkMode ? ' dark' : ''
           }`}
-          style={{
-            minHeight: '60vh',
-            maxWidth: '700px',
-            margin: '32px auto',
-          }}
+          style={{ minHeight: '60vh', maxWidth: '700px', margin: '32px auto' }}
         >
           <button
             className="dark-toggle"
@@ -283,77 +279,166 @@ const SubjectReader = () => {
           >
             {darkMode ? '🌙 Dark' : '☀️ Light'}
           </button>
-          {/* <SubjectPicker onSelect={handleSubjectSelect} current={subject} /> */}
-          <h1
-            style={{
-              color: darkMode ? '#90caf9' : '#1976d2',
-              fontSize: '2.7rem',
-              marginBottom: '22px',
-              letterSpacing: '1.2px',
-              fontWeight: 900,
-            }}
-          >
-            {msg.title}
-          </h1>
-          <h2
-            style={{
-              color: darkMode ? '#90caf9' : '#1976d2',
-              fontSize: '2rem',
-              marginBottom: '16px',
-              fontWeight: 800,
-            }}
-          >
-            {msg.subtitle}
-          </h2>
-          <p
-            style={{
-              color: darkMode ? '#bbb' : '#555',
-              fontSize: '1.25rem',
-              marginTop: '22px',
-              lineHeight: 1.8,
-              fontWeight: 700,
-            }}
-          >
-            {msg.description}
-          </p>
-          <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              marginTop: '18px',
-            }}
-          >
-            <span className="info-badge">
-              <svg
-                width="20"
-                height="20"
-                fill={darkMode ? '#90caf9' : '#1976d2'}
-                style={{ verticalAlign: 'middle', marginRight: '4px' }}
-                viewBox="0 0 24 24"
+          {/* Custom layout for 'logic' subject */}
+          {subject === 'logic' ? (
+            <>
+              <div style={{ marginBottom: 18 }}>
+                <div
+                  style={{
+                    color: darkMode ? '#90caf9' : '#1976d2',
+                    fontSize: '2.5rem',
+                    fontWeight: 900,
+                    letterSpacing: '1.2px',
+                  }}
+                >
+                  🎉  Welcome!  🎉
+                </div>
+                <div
+                  style={{
+                    color: darkMode ? '#90caf9' : '#1976d2',
+                    fontSize: '2rem',
+                    fontWeight: 800,
+                    margin: '12px 0 8px 0',
+                  }}
+                >
+                  ✨ Logic and Critical Thinking!
+                </div>
+                <div
+                  style={{
+                    color: darkMode ? '#bbb' : '#555',
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    margin: '8px 0',
+                  }}
+                >
+                  Logic
+                </div>
+                <div
+                  style={{
+                    color: darkMode ? '#bbb' : '#555',
+                    fontSize: '1.15rem',
+                    fontWeight: 700,
+                    margin: '8px 0 0 0',
+                  }}
+                >
+                  All Chapters In Amharic & English
+                </div>
+              </div>
+              <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  marginTop: '18px',
+                }}
               >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-2.83.48-5.48-1.51-5.96-4.34-.09-.52.36-.93.88-.93.44 0 .81.32.88.75.36 2.13 2.5 3.45 4.5 2.83 1.5-.47 2.5-1.96 2.5-3.58 0-1.62-1-3.11-2.5-3.58-2-.62-4.14.7-4.5 2.83-.07.43-.44.75-.88.75-.52 0-.97-.41-.88-.93.48-2.83 3.13-4.82 5.96-4.34 2.83.48 4.82 3.13 4.34 5.96-.48 2.83-3.13 4.82-5.96 4.34z" />
-              </svg>
-              For viewing only inside the mini app
-            </span>
-          </div>
-          <p
-            style={{
-              color: darkMode ? '#bbb' : '#555',
-              fontSize: '1rem',
-              marginTop: '18px',
-              lineHeight: 1.7,
-            }}
-          >
-            <b>Note:</b> PDF is rendered in-app for reading only. No download
-            required.
-            <br />
-            If you see any issues, try refreshing or using Telegram's in-app
-            browser.
-          </p>
-          <button className="open-note-btn">{msg.button}</button>
+                <span className="info-badge">
+                  <svg
+                    width="20"
+                    height="20"
+                    fill={darkMode ? '#90caf9' : '#1976d2'}
+                    style={{ verticalAlign: 'middle', marginRight: '4px' }}
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-2.83.48-5.48-1.51-5.96-4.34-.09-.52.36-.93.88-.93.44 0 .81.32.88.75.36 2.13 2.5 3.45 4.5 2.83 1.5-.47 2.5-1.96 2.5-3.58 0-1.62-1-3.11-2.5-3.58-2-.62-4.14.7-4.5 2.83-.07.43-.44.75-.88.75-.52 0-.97-.41-.88-.93.48-2.83 3.13-4.82 5.96-4.34 2.83.48 4.82 3.13 4.34 5.96-.48 2.83-3.13 4.82-5.96 4.34z" />
+                  </svg>
+                  For viewing only inside the mini app
+                </span>
+              </div>
+              <p
+                style={{
+                  color: darkMode ? '#bbb' : '#555',
+                  fontSize: '1rem',
+                  marginTop: '18px',
+                  lineHeight: 1.7,
+                }}
+              >
+                <b>Note:</b> PDF is rendered in-app for reading only. No
+                download required.
+                <br />
+                If you see any issues, try refreshing or using Telegram's in-app
+                browser.
+              </p>
+              <button className="open-note-btn" style={{ marginTop: 18 }}>
+                {msg.button}
+              </button>
+            </>
+          ) : (
+            <>
+              <h1
+                style={{
+                  color: darkMode ? '#90caf9' : '#1976d2',
+                  fontSize: '2.7rem',
+                  marginBottom: '22px',
+                  letterSpacing: '1.2px',
+                  fontWeight: 900,
+                }}
+              >
+                {msg.title}
+              </h1>
+              <h2
+                style={{
+                  color: darkMode ? '#90caf9' : '#1976d2',
+                  fontSize: '2rem',
+                  marginBottom: '16px',
+                  fontWeight: 800,
+                }}
+              >
+                {msg.subtitle}
+              </h2>
+              <p
+                style={{
+                  color: darkMode ? '#bbb' : '#555',
+                  fontSize: '1.25rem',
+                  marginTop: '22px',
+                  lineHeight: 1.8,
+                  fontWeight: 700,
+                }}
+              >
+                {msg.description}
+              </p>
+              <PDFViewerScrollable url={`/${pdf}`} darkMode={darkMode} />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  marginTop: '18px',
+                }}
+              >
+                <span className="info-badge">
+                  <svg
+                    width="20"
+                    height="20"
+                    fill={darkMode ? '#90caf9' : '#1976d2'}
+                    style={{ verticalAlign: 'middle', marginRight: '4px' }}
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-2.83.48-5.48-1.51-5.96-4.34-.09-.52.36-.93.88-.93.44 0 .81.32.88.75.36 2.13 2.5 3.45 4.5 2.83 1.5-.47 2.5-1.96 2.5-3.58 0-1.62-1-3.11-2.5-3.58-2-.62-4.14.7-4.5 2.83-.07.43-.44.75-.88.75-.52 0-.97-.41-.88-.93.48-2.83 3.13-4.82 5.96-4.34 2.83.48 4.82 3.13 4.34 5.96-.48 2.83-3.13 4.82-5.96 4.34z" />
+                  </svg>
+                  For viewing only inside the mini app
+                </span>
+              </div>
+              <p
+                style={{
+                  color: darkMode ? '#bbb' : '#555',
+                  fontSize: '1rem',
+                  marginTop: '18px',
+                  lineHeight: 1.7,
+                }}
+              >
+                <b>Note:</b> PDF is rendered in-app for reading only. No
+                download required.
+                <br />
+                If you see any issues, try refreshing or using Telegram's in-app
+                browser.
+              </p>
+              <button className="open-note-btn">{msg.button}</button>
+            </>
+          )}
         </div>
       )}
     </div>
