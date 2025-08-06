@@ -54,7 +54,8 @@ const subjectMessages = {
 const SubjectCard = ({ subjectKey, onSelect, darkMode, isLast }) => {
   const { emoji, subject, title, subtitle, description } =
     subjectMessages[subjectKey]
-  const [line1, line2] = description.split('\n')
+  // Build the full message block as a single string
+  const messageBlock = `${emoji} ${subject}\n${title}\n${subtitle}\n${description}`
   return (
     <div
       className="subject-card"
@@ -66,42 +67,43 @@ const SubjectCard = ({ subjectKey, onSelect, darkMode, isLast }) => {
         padding: '20px',
         maxWidth: '400px',
         margin: `32px auto${isLast ? '' : ' 48px'}`,
-        textAlign: 'center',
+        textAlign: 'left',
         boxShadow: darkMode
           ? '0 4px 12px rgba(255,255,255,0.1)'
           : '0 4px 12px rgba(0,0,0,0.1)',
+        fontSize: '1.13rem',
+        fontWeight: 600,
       }}
     >
-      <div style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: 6 }}>
-        {emoji} {subject}
-      </div>
-      <div style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: 6 }}>
-        {title}
-      </div>
-      <div style={{ fontSize: '1.2rem', margin: '8px 0', color: '#1976d2' }}>
-        {subtitle}
-      </div>
-      <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>{line1}</div>
-      <div style={{ fontSize: '1.1rem', marginBottom: 12 }}>{line2}</div>
-      <button
-        onClick={() => onSelect(subjectKey)}
+      <div
         style={{
-          padding: '10px 24px',
-          borderRadius: '30px',
-          background: '#1976d2',
-          color: '#fff',
-          border: 'none',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          fontSize: '1.1rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          margin: '0 auto',
+          whiteSpace: 'pre-line',
+          marginBottom: 0,
         }}
       >
-        <span style={{ fontSize: '1.3rem' }}>➡️</span> [ Open Note ]
-      </button>
+        {messageBlock}
+      </div>
+      <div style={{ marginTop: 0 }}>
+        <button
+          onClick={() => onSelect(subjectKey)}
+          style={{
+            padding: '10px 24px',
+            borderRadius: '30px',
+            background: '#1976d2',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            fontSize: '1.1rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            margin: '8px 0 0 0',
+          }}
+        >
+          <span style={{ fontSize: '1.3rem' }}>➡️</span> [ Open Note ]
+        </button>
+      </div>
     </div>
   )
 }
@@ -110,7 +112,6 @@ function SubjectReader() {
   const [darkMode, setDarkMode] = React.useState(false)
   const [selectedSubject, setSelectedSubject] = React.useState(null)
   const [loading, setLoading] = React.useState(false)
-  const [currentIdx, setCurrentIdx] = React.useState(0)
 
   const subjectKeys = Object.keys(subjectMessages)
   const isMobile = () =>
@@ -126,12 +127,7 @@ function SubjectReader() {
     }, 500)
   }
 
-  const handleNext = () => {
-    setCurrentIdx((idx) => (idx < subjectKeys.length - 1 ? idx + 1 : idx))
-  }
-  const handlePrev = () => {
-    setCurrentIdx((idx) => (idx > 0 ? idx - 1 : idx))
-  }
+  // Removed unused handleNext and handlePrev
 
   if (!isMobile()) {
     return (
